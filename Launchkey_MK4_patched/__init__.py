@@ -33,6 +33,7 @@ from .encoder_touch import EncoderTouchComponent
 from .keyboard import KeyboardComponent
 from .mappings import create_mappings
 from .scale import ScaleComponent
+from .scene_launch_hold import SceneLaunchHoldComponent
 from .session import SessionComponent
 from .session_navigation import SessionNavigationComponent
 from .skin import Skin
@@ -120,6 +121,7 @@ def create_launchkey_specification(elements_type, create_mappings_function, syse
             "Encoder_Touch": EncoderTouchComponent,
             "Keyboard": KeyboardComponent,
             "Scale": ScaleComponent,
+            "Scene_Launch_Hold": SceneLaunchHoldComponent,
             "Session": SessionComponent,
             "Session_Navigation": SessionNavigationComponent,
             "Step_Sequence": StepSequenceComponent,

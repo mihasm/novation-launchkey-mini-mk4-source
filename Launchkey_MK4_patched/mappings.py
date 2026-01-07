@@ -273,8 +273,9 @@ def create_launchkey_common_mappings(control_surface):
                     dict(
                         component="Session",
                         clip_launch_buttons="main_pads",
-                        scene_0_launch_button="scene_launch_button",
+                        #scene_0_launch_button="scene_launch_button",
                     ),
+                    dict(component="Scene_Launch_Hold"),
                     dict(
                         component="Session_Navigation",
                         up_button="pad_up_button",
@@ -286,6 +287,11 @@ def create_launchkey_common_mappings(control_surface):
             sequencer=dict(component="Sequencer_Modes"),
         )
         _logger.debug("Configured mappings['Daw_Pad_Modes']")
+
+        mappings["Scene_Launch_Hold"] = dict(
+            scene_launch_button="scene_launch_button",
+        )
+        _logger.debug("Configured mappings['Scene_Launch_Hold']")
 
         def _cycle_daw_pad_modes():
             _logger.debug("CALL _cycle_daw_pad_modes -> component_map['Daw_Pad_Modes'].cycle_mode()")
