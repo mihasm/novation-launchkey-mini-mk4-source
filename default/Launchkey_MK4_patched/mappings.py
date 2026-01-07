@@ -18,36 +18,8 @@ from .display import cancel_temp_screens
 from .launchkey_modes import LaunchkeyModesComponent
 from .midi import SET_RELATIVE_ENCODER_MODE
 
-
-# --------------------------------------------------------------------------------------
-# Per-script logger (single file next to this script)
-# --------------------------------------------------------------------------------------
-
-_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-_LOG_PATH = os.path.join(_SCRIPT_DIR, "launchkey_mk4_mappings.log")
-
-_logger = logging.getLogger(__name__)
-_logger.setLevel(logging.DEBUG)
-_logger.propagate = False  # avoid duplicate logs via Ableton/root logger
-
-# Prevent duplicate handlers on Ableton reloads
-if not any(isinstance(h, logging.FileHandler) for h in _logger.handlers):
-    try:
-        fh = logging.FileHandler(_LOG_PATH, mode="a", encoding="utf-8")
-        fh.setLevel(logging.DEBUG)
-        formatter = logging.Formatter(
-            "%(asctime)s.%(msecs)03d %(levelname)s [%(name)s] %(message)s",
-            "%Y-%m-%d %H:%M:%S",
-        )
-        fh.setFormatter(formatter)
-        _logger.addHandler(fh)
-        _logger.debug("Logger initialized. Log path: %s", _LOG_PATH)
-    except Exception:
-        sh = logging.StreamHandler(stream=sys.stderr)
-        sh.setLevel(logging.DEBUG)
-        _logger.addHandler(sh)
-        _logger.error("Failed to initialize file logger:\n%s", traceback.format_exc())
-
+from .mk4_log import get_logger
+_logger = get_logger("mappings")
 
 def activate_note_settings(control_surface):
     _logger.debug("ENTER activate_note_settings(control_surface=%r)", control_surface)
