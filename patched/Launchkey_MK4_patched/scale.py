@@ -48,13 +48,10 @@ FIRMWARE_SCALES = (
     (0, 1, 5, 7, 8),
 )
 
-_logger.debug("Building SCALE_NAMES from Live.Song.get_all_scales_ordered()")
 try:
     _all_scales = Live.Song.get_all_scales_ordered()
-    _logger.debug("Live.Song.get_all_scales_ordered() returned %d items", len(_all_scales))
     _intervals_to_name = {s[1]: s[0] for s in _all_scales}
     SCALE_NAMES = [None] + [_intervals_to_name.get(intervals, None) for intervals in FIRMWARE_SCALES]
-    _logger.debug("SCALE_NAMES built (len=%d)", len(SCALE_NAMES))
 except Exception:
     _logger.exception("Exception building SCALE_NAMES")
     # Fail-safe: keep a minimal list so script can load and you can see the error.
@@ -67,99 +64,69 @@ class ScaleComponent(Component):
     root_note_control = SendValueInputControl()
 
     def __init__(self, *a, **k):
-        _logger.debug("ENTER ScaleComponent.__init__(a=%r, k=%r)", a, k)
         try:
             super().__init__(*a, name="Scales", **k)
-            _logger.debug("super().__init__ completed; self.song=%r", getattr(self, "song", None))
 
             def make_task(fn):
-                _logger.debug("ENTER make_task(fn=%r)", fn)
                 try:
                     t = self._tasks.add(task.sequence(task.wait(0.1), task.run(fn)))
-                    _logger.debug("Task created: %r; killing initially", t)
                     t.kill()
                     return t
                 except Exception:
                     _logger.exception("Exception in ScaleComponent.__init__.make_task")
                     raise
 
-            _logger.debug("Creating _update_scale_type_control_task")
             self._update_scale_type_control_task = make_task(self._update_scale_type_control)
-
-            _logger.debug("Creating _update_root_note_control_task")
             self._update_root_note_control_task = make_task(self._update_root_note_control)
 
-            _logger.debug("Binding listeners to song")
             self.__on_scale_type_changed_in_song.subject = self.song
             self.__on_root_note_changed_in_song.subject = self.song
 
-            _logger.debug("Priming listeners by calling them once")
             self.__on_scale_type_changed_in_song()
             self.__on_root_note_changed_in_song()
 
-            _logger.debug("ScaleComponent.__init__ completed")
         except Exception:
             _logger.exception("Exception in ScaleComponent.__init__")
             raise
 
     @scale_type_control.value
     def scale_type_control(self, value, _):
-        _logger.debug("ENTER ScaleComponent.scale_type_control(value=%r)", value)
         try:
-            _logger.debug("Checking value in range(len(SCALE_NAMES)) (len=%d)", len(SCALE_NAMES))
             if value in range(len(SCALE_NAMES)):
                 scale_name = SCALE_NAMES[value]
-                _logger.debug("Resolved scale_name=%r for index=%r", scale_name, value)
                 if scale_name is None:
-                    _logger.debug("scale_name is None -> return")
                     return
                 current = getattr(self.song, "scale_name", None)
-                _logger.debug("Current song.scale_name=%r", current)
                 if current != scale_name:
-                    _logger.debug("Setting song.scale_name=%r", scale_name)
                     self.song.scale_name = scale_name
-            else:
-                _logger.debug("value out of range -> ignoring")
         except Exception:
             _logger.exception("Exception in ScaleComponent.scale_type_control handler")
             raise
 
     @root_note_control.value
     def root_note_control(self, value, _):
-        _logger.debug("ENTER ScaleComponent.root_note_control(value=%r)", value)
         try:
             if value in range(12):
                 current = getattr(self.song, "root_note", None)
-                _logger.debug("Current song.root_note=%r", current)
                 if current != value:
-                    _logger.debug("Setting song.root_note=%r", value)
                     self.song.root_note = value
-            else:
-                _logger.debug("value out of 0..11 range -> ignoring")
         except Exception:
             _logger.exception("Exception in ScaleComponent.root_note_control handler")
             raise
 
     def _update_scale_type_control(self):
-        _logger.debug("ENTER ScaleComponent._update_scale_type_control()")
         try:
             song_scale = getattr(self.song, "scale_name", None)
-            _logger.debug("song.scale_name=%r; checking membership in SCALE_NAMES", song_scale)
             if song_scale in SCALE_NAMES:
                 idx = SCALE_NAMES.index(song_scale)
-                _logger.debug("Setting scale_type_control.value=%r", idx)
                 self.scale_type_control.value = idx
-            else:
-                _logger.debug("song.scale_name not found in SCALE_NAMES -> no update")
         except Exception:
             _logger.exception("Exception in ScaleComponent._update_scale_type_control")
             raise
 
     def _update_root_note_control(self):
-        _logger.debug("ENTER ScaleComponent._update_root_note_control()")
         try:
             rn = getattr(self.song, "root_note", None)
-            _logger.debug("Setting root_note_control.value=%r", rn)
             self.root_note_control.value = rn
         except Exception:
             _logger.exception("Exception in ScaleComponent._update_root_note_control")
@@ -167,20 +134,16 @@ class ScaleComponent(Component):
 
     @listens("scale_name")
     def __on_scale_type_changed_in_song(self):
-        _logger.debug("ENTER ScaleComponent.__on_scale_type_changed_in_song() -> restart task")
         try:
             self._update_scale_type_control_task.restart()
-            _logger.debug("_update_scale_type_control_task restarted")
         except Exception:
             _logger.exception("Exception in ScaleComponent.__on_scale_type_changed_in_song")
             raise
 
     @listens("root_note")
     def __on_root_note_changed_in_song(self):
-        _logger.debug("ENTER ScaleComponent.__on_root_note_changed_in_song() -> restart task")
         try:
             self._update_root_note_control_task.restart()
-            _logger.debug("_update_root_note_control_task restarted")
         except Exception:
             _logger.exception("Exception in ScaleComponent.__on_root_note_changed_in_song")
             raise

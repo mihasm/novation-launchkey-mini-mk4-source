@@ -1,88 +1,85 @@
-# Novation Launchkey Mini MK4 – Decompiled & Patched MIDI Remote Script (PoC)
+# Novation Launchkey MK4 – Decompiled & Patched MIDI Remote Script
 
-⚠️ **Unofficial / Experimental Project**  
-This repository contains a manually decompiled, reconstructed, and partially patched version of the Ableton Live MIDI Remote Script for the **Novation Launchkey MK4** and **Launchkey Mini MK4** controllers.
+⚠️ **Unofficial / Experimental Project**
 
-This project exists purely for research, experimentation, and personal use.
+This repository contains a manually decompiled, reconstructed, and patched version of the Ableton Live MIDI Remote Script for the **Novation Launchkey MK4** and **Launchkey Mini MK4** controllers.
+
+This project exists for research, experimentation, and personal use.
 
 ---
 
-## Repository Structure
+## 📁 Repository Structure
 
-This repository contains **two folders**, each serving a different purpose:
+This repository contains two main directories:
 
-### 1. `default/`
-This folder contains the **decompiled and reconstructed** version of the original Ableton-provided MIDI Remote Script.
+### `default/`
+The **decompiled and reconstructed** version of the original Ableton-provided MIDI Remote Script.
 
-- Decompiled from the compiled Python bytecode shipped with Ableton Live.
-- Manually fixed and reconstructed where decompilation failed or produced incorrect results.
-- Not a 100% perfect reconstruction — some logic had to be **rewritten and inferred**.
-- All major modes were **manually tested** (keys, pads, scale mode, clip mode, etc.) to ensure basic functionality.
-- Intended as a **reference baseline** and a starting point for further work.
+- Decompiled from compiled Python bytecode shipped with Ableton Live
+- Manually fixed and reconstructed where decompilation failed
+- Not a 100% perfect reconstruction — some logic was rewritten and inferred
+- All major modes were manually tested (keys, pads, scale mode, clip mode, etc.)
+- Intended as a **reference baseline** for further development
 
-### 2. `patched/`
-This folder contains a **proof-of-concept (PoC) modification** based on the reconstructed script.
+### `patched/`
+A **proof-of-concept modification** based on the reconstructed script.
 
-Currently implemented feature:
-
+**Current Features:**
 - **Clip Deletion in Clip Mode**
-  - Enter **Clip Mode**
-  - **Hold a Scene Trigger** for longer than **0.35 seconds**
+  - Enter Clip Mode
+  - Hold a Scene Trigger button for 0.35+ seconds to enable delete mode
   - Press the pad corresponding to the clip you want to delete
   - The clip is deleted
 
-Notes:
-- This is a **PoC**, not a finished feature.
-- Timing thresholds and behavior may change.
-- More patches and refinements may be added in the future.
+**Notes:**
+- This is a PoC, not a finished feature
+- Timing thresholds and behavior may change
+- More patches and refinements may be added in the future
 
 ---
 
-## Installation
+## 🚀 Installation
 
-1. Locate your Ableton Live MIDI Remote Scripts directory.
+1. **Locate your Ableton Live MIDI Remote Scripts directory:**
 
-   Typical paths:
-   - **Windows**  
-     `C:\ProgramData\Ableton\Live <version>\Resources\MIDI Remote Scripts\`
-   - **macOS**  
-     `/Applications/Ableton Live <version>.app/Contents/App-Resources/MIDI Remote Scripts/`
+   **Windows:**
+   ```
+   C:\ProgramData\Ableton\Live <version>\Resources\MIDI Remote Scripts\
+   ```
 
-2. Copy the folders from this repository into that directory.
+   **macOS:**
+   ```
+   /Applications/Ableton Live <version>.app/Contents/App-Resources/MIDI Remote Scripts/
+   ```
 
-3. The scripts will appear in Ableton Live as:
-   - **Launchkey MK4 patched**
-   - **Launchkey Mini MK4 patched**
+2. **Copy the folders** from this repository into that directory.
 
-4. In Ableton Live:
+3. **In Ableton Live:**
    - Go to **Preferences → Link / MIDI**
-   - Select the patched script matching your controller
+   - Select the patched script matching your controller:
+     - **Launchkey MK4 patched** (for 25, 37, 49, or 61 key models)
+     - **Launchkey Mini MK4 patched** (for Mini model)
 
-No additional configuration is required.
-
----
-
-## Important Disclaimers
-
-- **No Ableton support**
-  - Ableton does not support this script.
-  - Do not contact Ableton regarding issues caused by this project.
-
-- **No author support**
-  - This repository is provided as-is.
-  - Issues, questions, or breakage are your responsibility.
-
-- **Not endorsed**
-  - Not endorsed by Ableton, Novation, or any third party.
-
-- **Use at your own risk**
-  - This script can break with Ableton updates.
-  - Bugs, crashes, or unexpected behavior are possible.
-  - You are responsible for backups and recovery.
+No additional configuration required.
 
 ---
 
-## Purpose of This Project
+## ⚠️ Important Disclaimers
+
+### No Support
+- **Ableton does not support this script** — do not contact Ableton regarding issues
+- **No author support** — this repository is provided as-is
+- **Not endorsed** by Ableton, Novation, or any third party
+
+### Use at Your Own Risk
+- This script can break with Ableton updates
+- Bugs, crashes, or unexpected behavior are possible
+- You are responsible for backups and recovery
+- **Do not use in live or professional environments without thorough testing**
+
+---
+
+## 🎯 Project Purpose
 
 - Reverse-engineering and understanding Ableton MIDI Remote Scripts
 - Experimenting with controller behavior beyond stock limitations
@@ -91,17 +88,22 @@ No additional configuration is required.
 
 ---
 
-## License
+## 📄 License
 
 No explicit license is provided.  
 Use, modify, and distribute **at your own legal and technical risk**.
 
 ---
 
-## Final Note
+## ⚡ Quick Start
 
-This is **experimental software**.  
-If you rely on your controller in live or professional environments, **do not use this** without thorough testing.
+1. Clone or download this repository
+2. Copy the `patched/` folder contents to your Ableton MIDI Remote Scripts directory
+3. Restart Ableton Live
+4. Select the patched script in Preferences → Link / MIDI
+5. Test thoroughly before using in production
 
-Proceed carefully.
+---
+
+**This is experimental software. Proceed carefully.**
 

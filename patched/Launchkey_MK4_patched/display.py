@@ -52,6 +52,7 @@ class Notifications(DefaultNotifications):
         bank = 'device_bank_select'
     class Clip(DefaultNotifications.Clip):
         double_loop = DefaultNotifications.DefaultText()
+        delete_mode = 'delete_clip'
     class Notes(DefaultNotifications.Notes):
         INCLUDE_ALL = True
     class Sequence(DefaultNotifications.Sequence):
@@ -89,13 +90,16 @@ def render_notification(state, notification_text):
             if notification_text == 'device_bank_select':
                 return DisplayContent(temp=TargetContent(lines=(liveobj_name(state.device.device) or '-', state.device.bank_name or '-')))
             else:
-                if notification_text.startswith('Send'):
-                    index = letter_to_index(notification_text.split()[(-1)].lower())
-                    return DisplayContent(temp=TargetContent(lines=('Sends', liveobj_name(song().return_tracks[index]))))
+                if notification_text == 'delete_clip':
+                    return DisplayContent(temp=TargetContent(lines=('Delete Clip',)))
                 else:
-                    if '\n' in notification_text:
-                        lines = tuple(notification_text.split('\n'))
-                        return DisplayContent(temp=TargetContent(config=Config.three_line if len(lines) == 3 else Config.two_line, lines=lines))
+                    if notification_text.startswith('Send'):
+                        index = letter_to_index(notification_text.split()[(-1)].lower())
+                        return DisplayContent(temp=TargetContent(lines=('Sends', liveobj_name(song().return_tracks[index]))))
+                    else:
+                        if '\n' in notification_text:
+                            lines = tuple(notification_text.split('\n'))
+                            return DisplayContent(temp=TargetContent(config=Config.three_line if len(lines) == 3 else Config.two_line, lines=lines))
 def create_root_view() -> view.View[Optional[DisplayContent]]:
     @view.View
     def main_view(state) -> Optional[DisplayContent]:

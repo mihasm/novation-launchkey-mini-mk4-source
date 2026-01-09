@@ -8,7 +8,7 @@ import traceback
 
 _LOGGER_NAME = "Launchkey_MK4"
 _LOG_FILENAME = "launchkey_mk4.log"
-LOGGING_ENABLED = False   # set to False to completely disable logging
+LOGGING_ENABLED = True   # set to False to completely disable logging
 
 def _create_logger():
     logger = logging.getLogger(_LOGGER_NAME)
